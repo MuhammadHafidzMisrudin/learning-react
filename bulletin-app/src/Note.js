@@ -26,14 +26,14 @@ class Note extends Component {
     alert("removing note");
   }
   save(){
-    alert("editing saved!");
+    alert(this._newText.value);
   }
   renderForm() {
     // create a form for a note to display.
     return (
       <div className="note">
         <form>
-          <textarea/>
+          <textarea ref={input => this._newText = input}/>
           <button onClick={this.save}><FaFloppyO/></button>
         </form>
       </div>
@@ -43,7 +43,7 @@ class Note extends Component {
     // create and render a note to display.
     return (
       <div className="note">
-        <p>Learn React</p>
+        <p>{this.props.children}</p>
         <span>
           <button id="edit" onClick={this.edit}><FaPencil/></button>
           <button id="remove" onClick={this.remove}><FaTrash/></button>
@@ -52,11 +52,10 @@ class Note extends Component {
     );
   }
   render(){
-    if (this.state.editing) {
-      return this.renderForm(); // if edit clicked, render a form.
-    } else {
-      return this.renderDisplay(); // otherwise, display a note.
-    }
+    // rendering output.
+    // if edit clicked, render a form.
+    // otherwise, display a note.
+    return this.state.editing ? this.renderForm() : this.renderDisplay();
   }
 }
 
