@@ -1,31 +1,44 @@
 import React, { Component } from 'react';
 import Note from './Note';
+import FaPlus from 'react-icons/lib/fa/plus'
 
 class Board extends Component {
   constructor(props) {
     // initialise state.
     super(props);
     this.state = {
-      notes: [
-        {
-          id: 0,
-          note: "Call Inma."
-        },
-        {
-          id: 1,
-          note: "Have a date with Inma."
-        },
-        {
-          id: 2,
-          note: "Buy Inma a flower."
-        }
-      ]
+      notes: []
     }
+    this.add = this.add.bind(this); // set add() in scope.
     this.eachNote = this.eachNote.bind(this); // set eachNote() in scope.
     this.update = this.update.bind(this); // set update() in scope.
     this.remove =  this.remove.bind(this); // set remove() in scope.
+    this.nextId = this.nextId.bind(this); // set nextId() in scope.
+  }
+  add(text){
+    // create and add new notes.
+    // return an object.
+    this.setState(prevState => ({
+      notes: [
+        // take all the notes that already in state,
+        // push them into a new array,
+        // then append on another note.
+        // create a new note with id and text.
+        ...prevState.notes,
+        {
+          id: this.nextId(),
+          note: text
+        }
+      ]
+    }));
+  }
+  nextId(){
+    // create a new id for a new Note object.
+    this.uniquesId = this.uniquesId || 0;
+    return this.uniquesId++;
   }
   update(newText, i){
+    // update note content.
     console.log("updating note at index", i, newText);
     this.setState(prevState => ({
       notes: prevState.notes.map(
@@ -62,6 +75,10 @@ class Board extends Component {
     return (
       <div className="board">
         {this.state.notes.map(this.eachNote)}
+        <button onClick={this.add.bind(null, "New Note")}
+                id="add">
+                <FaPlus/>
+        </button>
       </div>
     );
   }
