@@ -23,6 +23,7 @@ class Board extends Component {
     }
     this.eachNote = this.eachNote.bind(this); // set eachNote() in scope.
     this.update = this.update.bind(this); // set update() in scope.
+    this.remove =  this.remove.bind(this); // set remove() in scope.
   }
   update(newText, i){
     console.log("updating note at index", i, newText);
@@ -35,11 +36,20 @@ class Board extends Component {
       )
     }));
   }
+  remove(id){
+    console.log("removing note at index", id);
+    this.setState(prevState => ({
+      // pass prevState, reset the state of notes using filter.
+      // filter() passing in a note to perform logical check.
+      // return a new array that will remove the item where this is true.
+      notes: prevState.notes.filter(note => note.id !== id)
+    }));
+  }
   eachNote(note, i){
     // render all notes based on dynamic data - each individual note.
     // jsx attributes: key and index.
     return (
-      <Note key={i} index={i} onChange={this.update}>
+      <Note key={i} index={i} onChange={this.update} onRemove={this.remove}>
         {note.note}
       </Note>
     )

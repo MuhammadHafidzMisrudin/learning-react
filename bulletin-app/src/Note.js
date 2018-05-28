@@ -23,12 +23,13 @@ class Note extends Component {
     })
   }
   remove(){
-    alert("removing note");
+    //alert("removing note");
+    this.props.onRemove(this.props.index); // refers to remove(id).
   }
   save(e){
     //alert(this._newText.value);
     e.preventDefault(); // prevent the default behaviour of the form.
-    this.props.onChange(this._newText.value, this.props.index); // refers to update(newText, i)
+    this.props.onChange(this._newText.value, this.props.index); // refers to update(newText, i).
     this.setState({
       editing: false
     });
