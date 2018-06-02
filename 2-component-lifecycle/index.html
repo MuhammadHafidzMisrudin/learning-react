@@ -27,10 +27,26 @@
         // will be invoked right after initial mounting.
         alert("the component has just mounted");
       }
-
+      constructor(props) {
+        super(props);
+        this.state = {
+          backgroundColor: "purple"
+        }
+        this.update = this.update.bind(this);
+      }
+      update(){
+        // setting the state.
+        this.setState({
+          backgroundColor: "green"
+        })
+      }
+      componentDidUpdate() {
+        // will be invoked right after the component has been updated.
+       alert("the component has been updated.")
+      }
       render() {
         return (
-          <div id="myDiv"></div>
+          <div id="myDiv" style={this.state} onClick={this.update}></div>
         )
       }
     }
