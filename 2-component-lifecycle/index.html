@@ -19,6 +19,15 @@
 
   <script type="text/babel">
     class Box extends React.Component{
+      componentWillMount() {
+        // will be invoked immediately before the initial rendering occurs.
+        alert("the component is about to mount");
+      }
+      componentDidMount() {
+        // will be invoked right after initial mounting.
+        alert("the component has just mounted");
+      }
+
       render() {
         return (
           <div id="myDiv"></div>
