@@ -15,17 +15,52 @@ class Note extends Component {
     this.save = this.save.bind(this); // set save method in scope.
     this.renderForm = this.renderForm.bind(this); // set renderForm method in scope.
     this.renderDisplay = this.renderDisplay.bind(this); // set renderDisplay method in scope.
+    this.randomBetween =  this.randomBetween.bind(this); // set randomBetween method in scope.
   }
+
+  componentWillMount(){
+    // set the style of notes.
+    this.style = {
+      right: this.randomBetween(0, window.innerWidth - 150, 'px'),
+      top: this.randomBetween(0, window.innerHeight - 150, 'px'),
+      transform: `rotate(${this.randomBetween(-25, 25, 'deg')})`
+    }
+  }
+
+  randomBetween(x, y, s){
+    // place the notes randomly on the screen.
+    return x + Math.ceil(Math.random() * (y-x)) + s;
+  }
+
+  componentDidUpdate(){
+    // place to highlight text in a selected note.
+    var textArea;
+    if (this.state.editing) {
+      textArea = this._newText;
+      textArea.focus();
+      textArea.select();
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+    // check to be sure that something (text) has been changed.
+    // if something has been changed, it will re render.
+    // if not, no re-render will happen.
+    return (this.props.children !== nextProps.children || this.state !== nextState);
+  }
+
   edit(){
     //alert("editing note"); debug.
     this.setState({
       editing: true  // set the edit button state.
-    })
+    });
   }
+
   remove(){
     //alert("removing note");
     this.props.onRemove(this.props.index); // refers to remove(id).
   }
+
   save(e){
     //alert(this._newText.value);
     e.preventDefault(); // prevent the default behaviour of the form.
@@ -34,21 +69,24 @@ class Note extends Component {
       editing: false
     });
   }
+
   renderForm() {
     // create a form for a note to display.
     return (
-      <div className="note">
+      <div className="note" style={this.style}>
         <form onSubmit={this.save}>
-          <textarea ref={input => this._newText = input}/>
+          <textarea ref={input => this._newText = input}
+                    defaultValue={this.props.children}/>
           <button id="save"><FaFloppyO/></button>
         </form>
       </div>
     )
   }
+
   renderDisplay() {
     // create and render a note to display.
     return (
-      <div className="note">
+      <div className="note" style={this.style}>
         <p>{this.props.children}</p>
         <span>
           <button id="edit" onClick={this.edit}><FaPencil/></button>
@@ -57,6 +95,7 @@ class Note extends Component {
       </div>
     );
   }
+
   render(){
     // rendering output.
     // if edit clicked, render a form.

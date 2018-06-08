@@ -15,6 +15,7 @@ class Board extends Component {
     this.remove =  this.remove.bind(this); // set remove() in scope.
     this.nextId = this.nextId.bind(this); // set nextId() in scope.
   }
+
   componentWillMount(){
     // will be invoked before render.
     var self = this;
@@ -25,6 +26,7 @@ class Board extends Component {
         .then(json => json[0].split('. ').forEach(sentence => self.add(sentence.substring(0, 25))));
     }
   }
+
   add(text){
     // create and add new notes.
     // return an object.
@@ -42,11 +44,13 @@ class Board extends Component {
       ]
     }));
   }
+
   nextId(){
     // create a new id for a new Note object.
     this.uniquesId = this.uniquesId || 0;
     return this.uniquesId++;
   }
+
   update(newText, i){
     // update note content.
     console.log("updating note at index", i, newText);
@@ -59,6 +63,7 @@ class Board extends Component {
       )
     }));
   }
+
   remove(id){
     console.log("removing note at index", id);
     this.setState(prevState => ({
@@ -68,15 +73,18 @@ class Board extends Component {
       notes: prevState.notes.filter(note => note.id !== id)
     }));
   }
+
   eachNote(note, i){
     // render all notes based on dynamic data - each individual note.
     // jsx attributes: key and index.
+    // note.id has unique id for editing and delete record.
     return (
-      <Note key={i} index={i} onChange={this.update} onRemove={this.remove}>
+      <Note key={note.id} index={note.id} onChange={this.update} onRemove={this.remove}>
         {note.note}
       </Note>
     )
   }
+
   render() {
     // render parent component of Board with child of Note.
     // Note on a Board.
