@@ -15,6 +15,16 @@ class Board extends Component {
     this.remove =  this.remove.bind(this); // set remove() in scope.
     this.nextId = this.nextId.bind(this); // set nextId() in scope.
   }
+  componentWillMount(){
+    // will be invoked before render.
+    var self = this;
+    if (this.props.count) {
+       // load notes in state variable using fetch.
+      fetch(`https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`)
+        .then(response => response.json())
+        .then(json => json[0].split('. ').forEach(sentence => self.add(sentence.substring(0, 25))));
+    }
+  }
   add(text){
     // create and add new notes.
     // return an object.
